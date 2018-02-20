@@ -42,7 +42,6 @@ and "OPTIONAL" are to be interpreted as described in {{!RFC2119}}.
 > **Note to the RFC Editor:**  Please remove this section prior
 > to publication.
 
-Development of this draft takes place on Github at: https://github.com/securitytxt/security-txt
-
+Development of this draft takes place on Github at:  https://github.com/Soluto/oauth-jwt-otp-client-assertion
 # The Specification
 
