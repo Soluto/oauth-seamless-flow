@@ -31,6 +31,8 @@ Also, there are cases for applications without any UI, for example - Internet of
 
 In this document, we propose an extension to OAuth 2.0 protocol that provides a new authentication grant dedicated for those cases. This grant will allow an application to use strong authentication solution without user interaction. 
 
+This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client. The document will discuss the entire protocol, including the first registration request.
+
 ## Terminology
 
 In this document, the key words "MUST", "MUST NOT", "REQUIRED",
@@ -43,5 +45,44 @@ and "OPTIONAL" are to be interpreted as described in {{!RFC2119}}.
 > to publication.
 
 Development of this draft takes place on Github at:  https://github.com/Soluto/oauth-jwt-otp-client-assertion
-# The Specification
+# HTTP Parameter Bindings for Transporting Assertions
+The OAuth Assertion Framework {{!RFC7521}} defines generic HTTP parameters for transporting assertions (a.k.a. security tokens) during interactions with a token endpoint. This section defines specific parameters and treatments of those parameters for use with JWT Bearer Tokens.
 
+## Using OTP JWT for client authentication
+To use a OTP JWT, the client first need to generate the OTP as defined in section <>. Than, the client need to use the following parameter values and encodings.
+
+The value of the "client_assertion_type" is "urn:ietf:params:oauth:client-assertion-type:jwt-otp".
+
+The value of the "client_assertion" parameter contains a single JWT. It MUST NOT contain more than one JWT.
+
+The following example demonstrates client authentication using a JWT during the presentation of an authorization code grant in an access token request (with extra line breaks for display purposes only):
+
+~~~~~~~~~~
+     POST /token.oauth2 HTTP/1.1
+     Host: as.example.com
+     Content-Type: application/x-www-form-urlencoded
+
+     grant_type=authorization_code&
+     code=n0esc3NRze7LTCu7iYzS6a5acc3f0ogp4&
+     client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3A
+     client-assertion-type%3Ajwt-otp&
+     client_assertion=eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyIn0.
+     eyJpc3Mi[...omitted for brevity...].
+     cC4hiUPo[...omitted for brevity...]
+~~~~~~~~~~
+
+# JWT format and request processing
+
+## OTP generation
+To generate OTP, the client use it's state, created during the registration request as defined in section <>. The state consist from 2 numbers, and to generate a new the client has to roll this payload. The rolling is done by setting the value of Old to the current value of New, and setting new random value to New. For example, assuming this is the current state of the app:
+
+~~~~~~~~~~
+Old: 1
+New: 2
+~~~~~~~~~~
+
+After rolling, this will be the payload:
+~~~~~~~~~~
+Old: 2
+New: 1
+~~~~~~~~~~
