@@ -1,6 +1,6 @@
 ---
 title: An OAuth authentication flow for applications that does not require user interaction.
-docname: draft-oauth-jwt-otp-client-assertion-03
+docname: draft-oauth-jwt-otp-client-assertion-latest
 ipr: trust200902
 cat: info
 pi:
