@@ -212,7 +212,7 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    [RFC6749] or to rely on a JWT for client authentication, the
    authorization server MUST validate the JWT according to the criteria
    below.  Application of additional restrictions and policy are at the
-   discretion of the authorization server.  When the server will recieve
+   discretion of the authorization server.  When the server will receive
    the request, it will first extract the client-id from the request.
    Then, it will fetch the client information from a storage.  The
    client information contains the payload used by the client on the
@@ -231,10 +231,10 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    request is valid.  The server will issue a token, as specific in
    OAuth 2.0 [RFC6749] - If the client "previous" equals to the server
    "previous", and the client "next" equals to the server "next", the
-   server construct an error response as defined in OAuth 2.0 [RFC6749].
+   server construct an error response as defined in OAuth 2.0 [RFC6749]
    - Any other case will be threated by the server as an indication of
    malicious attack, and should be reported accordenly.  The server
-   construct an error response as defined in OAuth 2.0 [RFC6749].
+   construct an error response as defined in OAuth 2.0 [RFC6749]
 
 5.  Security Considerations
 
