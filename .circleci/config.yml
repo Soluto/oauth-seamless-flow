@@ -20,19 +20,6 @@ jobs:
           paths:
             - ~/git-reference
 
-      - restore_cache:
-          keys:
-            - npm-reference
-
-      - run:
-          name: "Run text linter"
-          command: "yarn install && yarn test"
-
-      - save_cache:
-          key: npm-reference
-          paths:
-            - ~/node_modules
-
       # Build txt and html versions of drafts
       - restore_cache:
           keys:
@@ -71,11 +58,34 @@ jobs:
           name: "Save GitHub Issues"
           command: "make issues || make issues DISABLE_ISSUE_FETCH=true && make gh-issues"
 
+  test:
+    docker:
+      - image: node:alpine
+    working_directory: ~/draft
+      - checkout
+
+      - restore_cache:
+          keys:
+            - npm-reference
+
+      - run:
+          name: "Run text linter"
+          command: "yarn install && yarn test"
+
+      - save_cache:
+          key: npm-reference
+          paths:
+            - ~/node_modules
+
 workflows:
   version: 2
   build:
     jobs:
       - build:
+          filters:
+            tags:
+              only: /.*?/
+      - test:
           filters:
             tags:
               only: /.*?/
