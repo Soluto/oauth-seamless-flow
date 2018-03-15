@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Soluto/oauth-jwt-otp-client-assertion/tree/master.svg?style=svg)](https://circleci.com/gh/Soluto/oauth-jwt-otp-client-assertion/tree/master)
+
 # oauth-jwt-otp-client-assertion
 Draft RFC for a new OAuth client assertion protocl. 
 The draft is based on an authentication solution developed at Soluto.
