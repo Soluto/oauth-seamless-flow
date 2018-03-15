@@ -14,7 +14,8 @@ author:
   email: omerlh@gmail.com
   organization: Soluto by Asurion
 
---- Abstract
+--- abstract
+
 This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication.
 
 --- middle

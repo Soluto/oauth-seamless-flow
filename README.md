@@ -1,11 +1,12 @@
 [![CircleCI](https://circleci.com/gh/Soluto/oauth-jwt-otp-client-assertion/tree/master.svg?style=svg)](https://circleci.com/gh/Soluto/oauth-jwt-otp-client-assertion/tree/master)
 
 # Oauth-jwt-otp-client-assertion
-A proposed standard for a new OAuth 2.0 authentication grant, based on authentication flow developed at Soluto.
+A proposed standard for a new OAuth 2.0 authentication grant, without user interaction.
 
 ## Why a new protocol?
-Authentication is important, but not always simple. 
-All current authentication mechanism are based on any user interaction - usually by showing a screen to user where she can enter her credentials.
+Autehntication is an essential part of all the apps, but it also has challenges.
+The current authentication solution for user-facing applications is interactive login:
+ The user has to enter her credentials in a login form in order to authenticate.
 But user intereaction is not always an option, as it affect the user experience.
 App developers need to choose between security and useability, not a simple choice.
 This protocl allows them to add strong authentication solution, without affecting the user experience.

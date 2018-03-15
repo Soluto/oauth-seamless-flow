@@ -1,17 +1,6 @@
 {
   "rules": {
     "period-in-list-item": true,
-    "en-capitalization": true,
-    "write-good": {
-        "passive": false,
-        "thereIs": false
-    },
-    "rousseau": {
-        "showLevels": ["suggestion", "warning", "error"]
-    },
-    "unexpanded-acronym" : {
-        "min_acronym_len" : 3
-    },
     "common-misspellings": {
         "ignore": []
     }
