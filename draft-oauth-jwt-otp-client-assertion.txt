@@ -73,7 +73,7 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -93,7 +93,7 @@ Table of Contents
    Also, there are cases for applications without any UI, for example -
    Internet of Things applications.  For those applications, adding a
    login steps could be a challenge - see [RFC2142] which discuss
-   another solution for console-based applications.
+   another solution Browserless and Input Constrained Devices.
 
    In this document, we propose an extension to OAuth 2.0 protocol that
    provides a new authentication grant dedicated for those cases.  This
@@ -101,10 +101,10 @@ Table of Contents
    without user interaction.
 
    This document defines how a One Time Password, encoded in a JWS, can
-   be used to authenticate the client.  The document will discuss the
-   entire protocol, including the first registration request.
-
-
+   be used to authenticate the client.  In order for the client to
+   perfom an authentication request, an initial registration step is
+   required.  This registration step is not part of this protocl, and
+   should be defined by the authorization server.
 
 
 
@@ -145,8 +145,8 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    The value of the "client_assertion_type" is
    "urn:ietf:params:oauth:client-assertion-type:JWS-otp".
 
-   The value of the "client_assertion" parameter contains a single JWS.
-   It MUST NOT contain more than one JWS.
+   The value of the "client_assertion" parameter contains a single JWS,
+   as defined in [RFC7515].  It MUST NOT contain more than one JWS.
 
    The following example demonstrates client authentication using a JWS
    during the presentation of an authorization code grant in an access
@@ -174,13 +174,15 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 4.1.  One Time Password generation
 
-   To generate one time password (OTP), the client use it's state,
-   created during the registration request, which is not covered in this
-   document.  The state consist from 2 numbers: "previous" and "next",
-   64 byte.  In order to generate a new JWS, the client has to roll this
-   payload.  The rolling is done by setting the value of "previous" to
-   the value of "current", and setting new crypto random value to
-   "next".  For example, assuming this is the current state of the app:
+   To generate one time password (OTP) as defined in [RFC2289], the
+   client use it's state, created during the registration request, which
+   is not covered in this document.  The state consist from 2 numbers:
+   "previous" and "next".  Each of those numbers can hold signed int, up
+   to 64 bytes length.  In order to generate a new JWS, the client has
+   to roll this payload.  The rolling is done by setting the value of
+   "previous" to the value of "current", and setting new crypto random,
+   as defined in [RFC4086], value to "next".  For example, assuming this
+   is the current state of the app:
 
    previous: 1
    next: 2
@@ -202,22 +204,20 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    }
 
    Where "client-id" is the id used when this client first registered.
-   To sign the JWS, the client use it's own key, as the one that was
-   genereated during the registration of this client.  All the fields
-   are required.  Any other fields besides those will be ignored.
+   All the fields are required.  Any other fields besides those will be
+   ignored.  To sign the JWS, the client use it's own key, which was
+   genereated during the registration of this client.
 
 4.3.  Request processing
 
    In order to issue an access token response as described in OAuth 2.0
-   [RFC6749] or to rely on a JWT for client authentication, the
-   authorization server MUST validate the JWT according to the criteria
-   below.  Application of additional restrictions and policy are at the
-   discretion of the authorization server.  When the server will receive
-   the request, it will first extract the client-id from the request.
-   Then, it will fetch the client information from a storage.  The
-   client information contains the payload used by the client on the
-   last request, and the key needed to verify the signature of the JWS.
-   The server first verify the signature of the JWS using the matching
+   [RFC6749], the authorization server MUST validate the JWS according
+   to the criteria below.  Application of additional restrictions and
+   policy are at the discretion of the authorization server.  After
+   decoding the JWS and extracting the "client-id", the server will
+   fetch: - The key correspond to this client, received on the
+   registration request - The current state of this client, from the
+   last successful request, or from the registration
 
 
 
@@ -226,13 +226,14 @@ Levi Hevroni           Expires September 16, 2018               [Page 4]
 Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
+   The server verifies that the JWS is vallid, by using the client's
    key.  If the signature is valid, the server can validate the payload:
    - If the client's "previous" is equals to the server "new", the
    request is valid.  The server will issue a token, as specific in
    OAuth 2.0 [RFC6749] - If the client "previous" equals to the server
    "previous", and the client "next" equals to the server "next", the
    server construct an error response as defined in OAuth 2.0 [RFC6749]
-   - Any other case will be threated by the server as an indication of
+   - Any other case will be threated by the server as an indication of a
    malicious attack, and should be reported accordenly.  The server
    construct an error response as defined in OAuth 2.0 [RFC6749]
 
@@ -255,9 +256,31 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
               Functions", RFC 2142, DOI 10.17487/RFC2142, May 1997,
               <https://www.rfc-editor.org/info/rfc2142>.
 
+   [RFC2289]  Haller, N., Metz, C., Nesser, P., and M. Straw, "A One-
+              Time Password System", STD 61, RFC 2289,
+              DOI 10.17487/RFC2289, February 1998,
+              <https://www.rfc-editor.org/info/rfc2289>.
+
+   [RFC4086]  Eastlake 3rd, D., Schiller, J., and S. Crocker,
+              "Randomness Requirements for Security", BCP 106, RFC 4086,
+              DOI 10.17487/RFC4086, June 2005,
+              <https://www.rfc-editor.org/info/rfc4086>.
+
    [RFC6749]  Hardt, D., Ed., "The OAuth 2.0 Authorization Framework",
               RFC 6749, DOI 10.17487/RFC6749, October 2012,
               <https://www.rfc-editor.org/info/rfc6749>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/info/rfc7515>.
+
+
+
+
+Levi Hevroni           Expires September 16, 2018               [Page 5]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
 
    [RFC7521]  Campbell, B., Mortimore, C., Jones, M., and Y. Goland,
               "Assertion Framework for OAuth 2.0 Client Authentication
@@ -277,4 +300,37 @@ Author's Address
 
 
 
-Levi Hevroni           Expires September 16, 2018               [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Levi Hevroni           Expires September 16, 2018               [Page 6]

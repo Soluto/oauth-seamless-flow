@@ -36,6 +36,12 @@
     overflow: auto;
     overscroll-behavior: contain;
   }
+  ul.toc li, #rfc\.toc li {
+    font-size: 15px;
+    line-height: 20px;
+    text-indent: 0;
+    padding-left: 1em;
+  }
   body>ul.toc {
     top: 140px;
   }
@@ -394,9 +400,9 @@ address {
 </h1>
 <p id="rfc.section.1.1.p.1">Authentication is a crucial part of modern application. There are various authentication methods for client side applications, and all those methods requires user interaction (e.g. login). This is due to the fact that there is no secure way to embed credentials in the application code.</p>
 <p id="rfc.section.1.1.p.2">While asking the user to login in order to authenticate the app is a strong authentication solution, it has impact on the application behavior. A login is just another step the user has to complete in order to use the apps, which users don&#8217;t always like to fulfill.</p>
-<p id="rfc.section.1.1.p.3">Also, there are cases for applications without any UI, for example - Internet of Things applications. For those applications, adding a login steps could be a challenge - see <a href="#RFC2142" class="xref">[RFC2142]</a> which discuss another solution for console-based applications.</p>
+<p id="rfc.section.1.1.p.3">Also, there are cases for applications without any UI, for example - Internet of Things applications. For those applications, adding a login steps could be a challenge - see <a href="#RFC2142" class="xref">[RFC2142]</a> which discuss another solution Browserless and Input Constrained Devices.</p>
 <p id="rfc.section.1.1.p.4">In this document, we propose an extension to OAuth 2.0 protocol that provides a new authentication grant dedicated for those cases. This grant will allow an application to use strong authentication solution without user interaction.</p>
-<p id="rfc.section.1.1.p.5">This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client. The document will discuss the entire protocol, including the first registration request.</p>
+<p id="rfc.section.1.1.p.5">This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client.  In order for the client to perfom an authentication request, an initial registration step is required.  This registration step is not part of this protocl, and should be defined by the authorization server.</p>
 <h1 id="rfc.section.1.2">
 <a href="#rfc.section.1.2">1.2.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
@@ -418,7 +424,7 @@ address {
 </h1>
 <p id="rfc.section.3.1.p.1">To use a OTP JWS, the client first need to generate the OTP as defined in section &#8220;JWS format and request processing&#8221;. Than, the client need to use the following parameter values and encodings.</p>
 <p id="rfc.section.3.1.p.2">The value of the &#8220;client_assertion_type&#8221; is &#8220;urn:ietf:params:oauth:client-assertion-type:JWS-otp&#8221;.</p>
-<p id="rfc.section.3.1.p.3">The value of the &#8220;client_assertion&#8221; parameter contains a single JWS. It MUST NOT contain more than one JWS.</p>
+<p id="rfc.section.3.1.p.3">The value of the &#8220;client_assertion&#8221; parameter contains a single JWS, as defined in <a href="#RFC7515" class="xref">[RFC7515]</a>. It MUST NOT contain more than one JWS.</p>
 <p id="rfc.section.3.1.p.4">The following example demonstrates client authentication using a JWS during the presentation of an authorization code grant in an access token request (with extra line breaks for display purposes only):</p>
 <pre>
      POST /token.oauth2 HTTP/1.1
@@ -438,7 +444,7 @@ address {
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#one-time-password-generation" id="one-time-password-generation">One Time Password generation</a>
 </h1>
-<p id="rfc.section.4.1.p.1">To generate one time password (OTP), the client use it&#8217;s state, created during the registration request, which is not covered in this document. The state consist from 2 numbers: <samp>previous</samp> and <samp>next</samp>, 64 byte. In order to generate a new JWS, the client has to roll this payload. The rolling is done by setting the value of <samp>previous</samp> to the value of <samp>current</samp>, and setting new crypto random value to <samp>next</samp>. For example, assuming this is the current state of the app:</p>
+<p id="rfc.section.4.1.p.1">To generate one time password (OTP) as defined in <a href="#RFC2289" class="xref">[RFC2289]</a>, the client use it&#8217;s state, created during the registration request, which is not covered in this document.  The state consist from 2 numbers: <samp>previous</samp> and <samp>next</samp>.  Each of those numbers can hold signed int, up to 64 bytes length.  In order to generate a new JWS, the client has to roll this payload. The rolling is done by setting the value of <samp>previous</samp> to the value of <samp>current</samp>, and setting new crypto random, as defined in <a href="#RFC4086" class="xref">[RFC4086]</a>, value to <samp>next</samp>.  For example, assuming this is the current state of the app:</p>
 <pre>
 previous: 1
 next: 2
@@ -459,11 +465,12 @@ next: 5
     client-id: 89
 }
 </pre>
-<p id="rfc.section.4.2.p.2">Where <samp>client-id</samp> is the id used when this client first registered.  To sign the JWS, the client use it&#8217;s own key, as the one that was genereated during the registration of this client.  All the fields are required. Any other fields besides those will be ignored.</p>
+<p id="rfc.section.4.2.p.2">Where <samp>client-id</samp> is the id used when this client first registered.  All the fields are required.  Any other fields besides those will be ignored.  To sign the JWS, the client use it&#8217;s own key, which was genereated during the registration of this client.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#request-processing" id="request-processing">Request processing</a>
 </h1>
-<p id="rfc.section.4.3.p.1">In order to issue an access token response as described in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> or to rely on a JWT for client authentication, the authorization server MUST validate the JWT according to the criteria below.  Application of additional restrictions and policy are at the discretion of the authorization server.  When the server will receive the request, it will first extract the client-id from the request.  Then, it will fetch the client information from a storage.  The client information contains the payload used by the client on the last request, and the key needed to verify the signature of the JWS.  The server first verify the signature of the JWS using the matching key.  If the signature is valid, the server can validate the payload: - If the client&#8217;s <samp>previous</samp> is equals to the server <samp>new</samp>, the request is valid. The server will issue a token, as specific in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> - If the client <samp>previous</samp> equals to the server <samp>previous</samp>, and the client <samp>next</samp> equals to the server <samp>next</samp>, the server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> - Any other case will be threated by the server as an indication of malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a></p>
+<p id="rfc.section.4.3.p.1">In order to issue an access token response as described in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a>, the authorization server MUST validate the JWS according to the criteria below.  Application of additional restrictions and policy are at the discretion of the authorization server.  After decoding the JWS and extracting the <samp>client-id</samp>, the server will fetch: - The key correspond to this client, received on the registration request - The current state of this client, from the last successful request, or from the registration</p>
+<p id="rfc.section.4.3.p.2">The server verifies that the JWS is vallid, by using the client&#8217;s key.  If the signature is valid, the server can validate the payload: - If the client&#8217;s <samp>previous</samp> is equals to the server <samp>new</samp>, the request is valid. The server will issue a token, as specific in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> - If the client <samp>previous</samp> equals to the server <samp>previous</samp>, and the client <samp>next</samp> equals to the server <samp>next</samp>, the server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a> - Any other case will be threated by the server as an indication of a malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a></p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
@@ -486,9 +493,24 @@ next: 5
 <a>Crocker, D.</a>, "<a href="https://tools.ietf.org/html/rfc2142">Mailbox Names for Common Services, Roles and Functions</a>", RFC 2142, DOI 10.17487/RFC2142, May 1997.</td>
 </tr>
 <tr>
+<td class="reference"><b id="RFC2289">[RFC2289]</b></td>
+<td class="top">
+<a>Haller, N.</a>, <a>Metz, C.</a>, <a>Nesser, P.</a> and <a>M. Straw</a>, "<a href="https://tools.ietf.org/html/rfc2289">A One-Time Password System</a>", STD 61, RFC 2289, DOI 10.17487/RFC2289, February 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4086">[RFC4086]</b></td>
+<td class="top">
+<a>Eastlake 3rd, D.</a>, <a>Schiller, J.</a> and <a>S. Crocker</a>, "<a href="https://tools.ietf.org/html/rfc4086">Randomness Requirements for Security</a>", BCP 106, RFC 4086, DOI 10.17487/RFC4086, June 2005.</td>
+</tr>
+<tr>
 <td class="reference"><b id="RFC6749">[RFC6749]</b></td>
 <td class="top">
 <a>Hardt, D.</a>, "<a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a>", RFC 6749, DOI 10.17487/RFC6749, October 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7515">[RFC7515]</b></td>
+<td class="top">
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7515">JSON Web Signature (JWS)</a>", RFC 7515, DOI 10.17487/RFC7515, May 2015.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC7521">[RFC7521]</b></td>
