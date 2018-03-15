@@ -62,6 +62,7 @@ jobs:
     docker:
       - image: node:alpine
     working_directory: ~/draft
+    steps:
       - checkout
 
       - restore_cache:
