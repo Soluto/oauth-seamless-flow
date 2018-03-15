@@ -20,9 +20,18 @@ jobs:
           paths:
             - ~/git-reference
 
-      - text_spelling:
+      - restore_cache:
+          keys:
+            - npm-reference
+
+      - run:
           name: "Run text linter"
           command: "yarn install && yarn test"
+
+      - save_cache:
+          key: npm-reference
+          paths:
+            - ~/node_modules
 
       # Build txt and html versions of drafts
       - restore_cache:

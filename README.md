@@ -8,7 +8,7 @@ Authentication is important, but not always simple.
 All current authentication mechanism are based on any user interaction - usually by showing a screen to user where she can enter her credentials.
 But user intereaction is not always an option, as it affect the user experience.
 App developers need to choose between security and useability, not a simple choice.
-This protocl aldsfsdfos them to add strong authentication solution, without affecting the user experience.
+This protocl allows them to add strong authentication solution, without affecting the user experience.
 To find more about this protocol, you can read this [blog post](https://blog.solutotlv.com/userless-mobile-authentication/?utm_source=github), or watch this [recording](https://www.youtube.com/watch?v=57FrvVvIq6I&index=21&list=PLpr-xdpM8wG-mJASEZ4TqFYtiRgasd-ki&t=0s).
 The current version is published as github pages [here](https://soluto.github.io/oauth-jwt-otp-client-assertion/)
 
