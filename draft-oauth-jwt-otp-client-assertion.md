@@ -28,11 +28,13 @@ Authentication is a crucial part of modern application. There are various authen
 
 While asking the user to login in order to authenticate the app is a strong authentication solution, it has impact on the application behavior. A login is just another step the user has to complete in order to use the apps, which users don't always like to fulfill.
 
-Also, there are cases for applications without any UI, for example - Internet of Things applications. For those applications, adding a login steps could be a challenge - see {{!RFC2142}} which discuss another solution for console-based applications.
+Also, there are cases for applications without any UI, for example - Internet of Things applications. For those applications, adding a login steps could be a challenge - see {{!RFC2142}} which discuss another solution Browserless and Input Constrained Devices.
 
 In this document, we propose an extension to OAuth 2.0 protocol that provides a new authentication grant dedicated for those cases. This grant will allow an application to use strong authentication solution without user interaction. 
 
-This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client. The document will discuss the entire protocol, including the first registration request.
+This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client. 
+In order for the client to perfom an authentication request, an initial registration step is required.
+This registration step is not part of this protocl, and should be defined by the authorization server.
 
 ## Terminology
 
@@ -57,7 +59,7 @@ To use a OTP JWS, the client first need to generate the OTP as defined in sectio
 
 The value of the "client_assertion_type" is "urn:ietf:params:oauth:client-assertion-type:JWS-otp".
 
-The value of the "client_assertion" parameter contains a single JWS. It MUST NOT contain more than one JWS.
+The value of the "client_assertion" parameter contains a single JWS, as defined in {{!RFC7515}}. It MUST NOT contain more than one JWS.
 
 The following example demonstrates client authentication using a JWS during the presentation of an authorization code grant in an access token request (with extra line breaks for display purposes only):
 
@@ -78,7 +80,11 @@ The following example demonstrates client authentication using a JWS during the 
 
 ## One Time Password generation
 
-To generate one time password (OTP), the client use it's state, created during the registration request, which is not covered in this document. The state consist from 2 numbers: `previous` and `next`, 64 byte. In order to generate a new JWS, the client has to roll this payload. The rolling is done by setting the value of `previous` to the value of `current`, and setting new crypto random value to `next`. For example, assuming this is the current state of the app:
+To generate one time password (OTP) as defined in {{!RFC2289}}, the client use it's state, created during the registration request, which is not covered in this document. 
+The state consist from 2 numbers: `previous` and `next`. 
+Each of those numbers can hold signed int, up to 64 bytes length.
+In order to generate a new JWS, the client has to roll this payload. The rolling is done by setting the value of `previous` to the value of `current`, and setting new crypto random, as defined in {{!RFC4086}}, value to `next`. 
+For example, assuming this is the current state of the app:
 
 ~~~~~~~~~~
 previous: 1
@@ -105,20 +111,22 @@ This is the format of the JWS payload:
 ~~~~~~~~~~
 
 Where `client-id` is the id used when this client first registered.
-To sign the JWS, the client use it's own key, as the one that was genereated during the registration of this client. 
-All the fields are required. Any other fields besides those will be ignored.
+All the fields are required. 
+Any other fields besides those will be ignored.
+To sign the JWS, the client use it's own key, which was genereated during the registration of this client. 
 
 ## Request processing
-In order to issue an access token response as described in OAuth 2.0 {{!RFC6749}} or to rely on a JWT for client authentication, the authorization server MUST validate the JWT according to the criteria below. 
+In order to issue an access token response as described in OAuth 2.0 {{!RFC6749}}, the authorization server MUST validate the JWS according to the criteria below. 
 Application of additional restrictions and policy are at the discretion of the authorization server.
-When the server will receive the request, it will first extract the client-id from the request.
-Then, it will fetch the client information from a storage.
-The client information contains the payload used by the client on the last request, and the key needed to verify the signature of the JWS.
-The server first verify the signature of the JWS using the matching key.
+After decoding the JWS and extracting the `client-id`, the server will fetch:
+ - The key correspond to this client, received on the registration request
+ - The current state of this client, from the last successful request, or from the registration
+
+The server verifies that the JWS is vallid, by using the client's key.
 If the signature is valid, the server can validate the payload:
  - If the client's `previous` is equals to the server `new`, the request is valid. The server will issue a token, as specific in OAuth 2.0 {{!RFC6749}}
  - If the client `previous` equals to the server `previous`, and the client `next` equals to the server `next`, the server construct an error response as defined in OAuth 2.0 {{!RFC6749}}
- - Any other case will be threated by the server as an indication of malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 {{!RFC6749}}
+ - Any other case will be threated by the server as an indication of a malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 {{!RFC6749}}
 
 # Security Considerations
 
