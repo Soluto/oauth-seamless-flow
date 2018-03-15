@@ -14,7 +14,7 @@ author:
   email: omerlh@gmail.com
   organization: Soluto by Asurion
 
---- abstract
+--- Abstract
 This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication.
 
 --- middle
@@ -110,14 +110,14 @@ All the fields are required. Any other fields besides those will be ignored.
 ## Request processing
 In order to issue an access token response as described in OAuth 2.0 {{!RFC6749}} or to rely on a JWT for client authentication, the authorization server MUST validate the JWT according to the criteria below. 
 Application of additional restrictions and policy are at the discretion of the authorization server.
-When the server will recieve the request, it will first extract the client-id from the request.
+When the server will receive the request, it will first extract the client-id from the request.
 Then, it will fetch the client information from a storage.
 The client information contains the payload used by the client on the last request, and the key needed to verify the signature of the JWS.
 The server first verify the signature of the JWS using the matching key.
 If the signature is valid, the server can validate the payload:
  - If the client's `previous` is equals to the server `new`, the request is valid. The server will issue a token, as specific in OAuth 2.0 {{!RFC6749}}
- - If the client `previous` equals to the server `previous`, and the client `next` equals to the server `next`, the server construct an error response as defined in OAuth 2.0 {{!RFC6749}}.
- - Any other case will be threated by the server as an indication of malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 {{!RFC6749}}.
+ - If the client `previous` equals to the server `previous`, and the client `next` equals to the server `next`, the server construct an error response as defined in OAuth 2.0 {{!RFC6749}}
+ - Any other case will be threated by the server as an indication of malicious attack, and should be reported accordenly. The server construct an error response as defined in OAuth 2.0 {{!RFC6749}}
 
 # Security Considerations
 

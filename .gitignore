@@ -13,3 +13,4 @@ venv/
 issues.json
 pulls.json
 report.xml
+node_modules/

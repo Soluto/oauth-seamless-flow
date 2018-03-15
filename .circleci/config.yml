@@ -20,6 +20,10 @@ jobs:
           paths:
             - ~/git-reference
 
+      - text_spelling:
+          name: "Run text linter"
+          command: "yarn install && yarn test"
+
       # Build txt and html versions of drafts
       - restore_cache:
           keys:

@@ -1,0 +1,21 @@
+{
+  "name": "oauth-jwt-otp-client-assertion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Soluto/oauth-jwt-otp-client-assertion.git",
+  "author": "Omer Levi Hevroni <omerl@soluto.com>",
+  "license": "MIT",
+  "dependencies": {
+    "textlint": "^10.1.4",
+    "textlint-rule-common-misspellings": "^1.0.1",
+    "textlint-rule-en-capitalization": "^2.0.1",
+    "textlint-rule-period-in-list-item": "^0.2.0",
+    "textlint-rule-rousseau": "^1.4.5",
+    "textlint-rule-unexpanded-acronym": "^1.2.1",
+    "textlint-rule-write-good": "^1.6.2"
+  },
+  "scripts": {
+    "test": "textlint README.md draft-oauth-jwt-otp-client-assertion.md",
+    "test:fix": "textlint README.md draft-oauth-jwt-otp-client-assertion.md --fix"
+  }
+}
