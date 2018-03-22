@@ -69,17 +69,17 @@ Table of Contents
      1.3.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Note to Readers . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  HTTP Parameter Bindings for Transporting Assertions . . . . .   4
-     3.1.  Using OTP JWS for client authentication . . . . . . . . .   5
+     3.1.  Using OTP JWS for client authentication . . . . . . . . .   4
    4.  JWS format and request processing . . . . . . . . . . . . . .   5
      4.1.  One Time Password generation  . . . . . . . . . . . . . .   5
-     4.2.  Creating the JWS  . . . . . . . . . . . . . . . . . . . .   6
+     4.2.  Creating the JWS  . . . . . . . . . . . . . . . . . . . .   5
      4.3.  Request processing  . . . . . . . . . . . . . . . . . . .   6
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-     5.1.  Replay Attacks  . . . . . . . . . . . . . . . . . . . . .   7
-     5.2.  Compromised Signing key . . . . . . . . . . . . . . . . .   7
+     5.1.  Replay Attacks  . . . . . . . . . . . . . . . . . . . . .   6
+     5.2.  Compromised Signing key . . . . . . . . . . . . . . . . .   6
      5.3.  Man in the Middle . . . . . . . . . . . . . . . . . . . .   7
      5.4.  Reverse Engineering . . . . . . . . . . . . . . . . . . .   7
-     5.5.  OTP Generation  . . . . . . . . . . . . . . . . . . . . .   8
+     5.5.  OTP Generation  . . . . . . . . . . . . . . . . . . . . .   7
      5.6.  Signing Key Consideration . . . . . . . . . . . . . . . .   8
        5.6.1.  Generation and Storage  . . . . . . . . . . . . . . .   8
        5.6.2.  Algorithm . . . . . . . . . . . . . . . . . . . . . .   8
@@ -87,7 +87,7 @@ Table of Contents
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
      7.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -157,8 +157,8 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
    This grant (as degined in [RFC7523]) could be used by mobile
    application for seamless authentication.  The grant used signed JWT
-   (see [RFC7519]) to authenticate the client.  It has three
-   disadvantages when compared with this grant:
+   (see [RFC7519]) to authenticate the client.  It has two disadvantages
+   when compared with this grant:
 
    o  Siginificant part of the security of the protocol is the
       expiration date of the JWT.  In case an hacker was able to obtain
@@ -181,13 +181,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
       section, this protocol allows the authorization server to detect
       compromised signing key.  See the discussion there for refference.
       This mitigation does not exist in JWT client assertion grant.
-
-   o  Replay Attack.  JWT client assertion grant mitigate Replay Attack
-      by setting the expiration date.  As discussed previously on this
-      section, time can be a challenge for mobile application.
-      Therefore, using this grant without setting the expiration date of
-      the JWT could be an option.  In such case, the protocol is
-      vulnerable to Replay Attack.
 
 1.3.  Terminology
 
@@ -214,18 +207,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    specific parameters and treatments of those parameters for use with
    JWS Bearer Tokens.
 
-
-
-
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 4]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
 3.1.  Using OTP JWS for client authentication
 
    To use a OTP JWS, the client first need to generate the OTP as
@@ -237,6 +218,13 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
    The value of the "client_assertion" parameter contains a single JWS,
    as defined in [RFC7515].  It MUST NOT contain more than one JWS.
+
+
+
+Levi Hevroni           Expires September 23, 2018               [Page 4]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
 
    The following example demonstrates client authentication using a JWS
    during the presentation of an authorization code grant in an access
@@ -275,13 +263,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    previous: 2
    next: 5
 
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 5]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
 4.2.  Creating the JWS
 
    After rolling the payload, the client can create the JWS.  This is
@@ -292,6 +273,14 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
        next: 5
        client-id: 89
    }
+
+
+
+
+Levi Hevroni           Expires September 23, 2018               [Page 5]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
 
    Where "client-id" is the id used when this client first registered.
    All the fields are required.  Any other fields besides those will be
@@ -326,18 +315,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    sections will discuss threats which are relevants for mobile
    applications and are mitigated by this protocol.
 
-
-
-
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 6]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
 5.1.  Replay Attacks
 
    Due to the usage of OTP, a replay attack is not feasable.  If an
@@ -353,6 +330,14 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    will be able to compromise it and retrieve the state and the signing
    key.  This will allows the attacker to impersonate the device and
    request an access token.  The attacker will be able to authenticate
+
+
+
+Levi Hevroni           Expires September 23, 2018               [Page 6]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
+
    as until the first time the device will try to authenticate.  When
    the device will try to authenticate, the request will failed.  It
    will fail because the state on the authorization server will match
@@ -385,15 +370,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    code.  All that is required for the authentication request should be
    generated on the device.
 
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 7]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
 5.5.  OTP Generation
 
    The security of the OTP is as strong as the randomness used to
@@ -405,6 +381,18 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    signing key, will not allows the attacker to perform authentiction
    request.  It is still advised to store them securely, and follow the
    operation system recomendation (iOS [2], Android [3]).
+
+
+
+
+
+
+
+
+Levi Hevroni           Expires September 23, 2018               [Page 7]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
 
 5.6.  Signing Key Consideration
 
@@ -442,14 +430,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 8]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
    [RFC2289]  Haller, N., Metz, C., Nesser, P., and M. Straw, "A One-
               Time Password System", STD 61, RFC 2289,
               DOI 10.17487/RFC2289, February 1998,
@@ -459,6 +439,16 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
               "Randomness Requirements for Security", BCP 106, RFC 4086,
               DOI 10.17487/RFC4086, June 2005,
               <https://www.rfc-editor.org/info/rfc4086>.
+
+
+
+
+
+
+Levi Hevroni           Expires September 23, 2018               [Page 8]
+
+Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
@@ -497,15 +487,6 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    [3] https://developer.android.com/training/articles/security-
        tips.html#UserData
 
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 9]
-
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
-
-
 Author's Address
 
    Omer Levi Hevroni
@@ -520,41 +501,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Levi Hevroni           Expires September 23, 2018              [Page 10]
+Levi Hevroni           Expires September 23, 2018               [Page 9]

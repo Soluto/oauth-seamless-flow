@@ -454,13 +454,12 @@ address {
 <h1 id="rfc.section.1.2.3">
 <a href="#rfc.section.1.2.3">1.2.3.</a> <a href="#jwt-client-assertion" id="jwt-client-assertion">JWT Client Assertion</a>
 </h1>
-<p id="rfc.section.1.2.3.p.1">This grant (as degined in <a href="#RFC7523" class="xref">[RFC7523]</a>) could be used by mobile application for seamless authentication.  The grant used signed JWT (see <a href="#RFC7519" class="xref">[RFC7519]</a>) to authenticate the client.  It has three disadvantages when compared with this grant:</p>
+<p id="rfc.section.1.2.3.p.1">This grant (as degined in <a href="#RFC7523" class="xref">[RFC7523]</a>) could be used by mobile application for seamless authentication.  The grant used signed JWT (see <a href="#RFC7519" class="xref">[RFC7519]</a>) to authenticate the client.  It has two disadvantages when compared with this grant:</p>
 <p></p>
 
 <ul>
 <li>Siginificant part of the security of the protocol is the expiration date of the JWT.  In case an hacker was able to obtain a JWT, she will be able to perform authentication request until the JWT expires.  Therefore, it is advised to use as shorter expiration time as possible.  Time can be a challenge on mobile device, which are not always synchronized with the global time.  Usage of JWT would require the authorization server to allow very long JWT expiration time.</li>
 <li>Detectining Compromised Signing Key.  As discussed on the security section, this protocol allows the authorization server to detect compromised signing key.  See the discussion there for refference.  This mitigation does not exist in JWT client assertion grant.</li>
-<li>Replay Attack.  JWT client assertion grant mitigate Replay Attack by setting the expiration date.  As discussed previously on this section, time can be a challenge for mobile application.  Therefore, using this grant without setting the expiration date of the JWT could be an option.  In such case, the protocol is vulnerable to Replay Attack.</li>
 </ul>
 <h1 id="rfc.section.1.3">
 <a href="#rfc.section.1.3">1.3.</a> <a href="#terminology" id="terminology">Terminology</a>
