@@ -58,7 +58,7 @@ Therefore, it still requires user interaction, which this protocol aims to avoid
 ### JWT Client Assertion
 This grant (as degined in {{!RFC7523}}) could be used by mobile application for seamless authentication.
 The grant used signed JWT (see {{!RFC7519}}) to authenticate the client. 
-It has three disadvantages when compared with this grant:
+It has two disadvantages when compared with this grant:
 
  - Siginificant part of the security of the protocol is the expiration date of the JWT.
 In case an hacker was able to obtain a JWT, she will be able to perform authentication request until the JWT expires.
@@ -70,12 +70,6 @@ Usage of JWT would require the authorization server to allow very long JWT expir
  As discussed on the security section, this protocol allows the authorization server to detect compromised signing key.
  See the discussion there for refference.
 This mitigation does not exist in JWT client assertion grant.
-
- - Replay Attack.
- JWT client assertion grant mitigate Replay Attack by setting the expiration date.
- As discussed previously on this section, time can be a challenge for mobile application.
- Therefore, using this grant without setting the expiration date of the JWT could be an option.
- In such case, the protocol is vulnerable to Replay Attack.
 
 ## Terminology
 
