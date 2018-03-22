@@ -1,5 +1,5 @@
 ---
-title: Non-interactive OAuth 2.0 Client Authentication grant
+title: Seamless OAuth 2.0 Client Assertion Grant
 docname: draft-seamless-flow-latest
 ipr: trust200902
 cat: info
@@ -77,14 +77,14 @@ In this document, the key words "MUST", "MUST NOT", "REQUIRED",
 "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
 and "OPTIONAL" are to be interpreted as described in {{!RFC2119}}.
 
-The term "device" used in this document reffer to the phisical applience used by the user, which the application code is running on. 
+The term "device" used in this document refer to the physical appliance used by the user, which the application code is running on. 
 
 # Note to Readers
 
 > **Note to the RFC Editor:**  Please remove this section prior
 > to publication.
 
-Development of this draft takes place on Github at:  https://github.com/Soluto/oauth-JWS-otp-client-assertion
+Development of this draft takes place on Github at: [https://github.com/Soluto/oauth-seamless-flow](https://github.com/Soluto/oauth-seamless-flow).
 
 # HTTP Parameter Bindings for Transporting Assertions
 
@@ -223,8 +223,8 @@ It is still advised to store them securely, and follow the operating system reco
 
 A fundamental part of the security of the protocol is the key used to sign the JWS.
 The key should be generated and stored in a secure wat, and if possible to use the tools provided by the OS.
-On iOS, use Keychain to generate and persist the key.
-On Android, the best option is the Key Store, but due to implementation limitations, it is advised to use OpenSSL.
+On iOS, use [Keychain](https://developer.apple.com/documentation/security/keychain_services/keychains) to generate and store the key.
+On Android, the best option is the [Keystore](https://developer.android.com/training/articles/keystore.html), but due to implementation limitations (see this [post](https://doridori.github.io/android-security-the-forgetful-keystore/#sthash.CgPjGF4h.dpbs) for example), it is advised to use OpenSSL.
 
 ### Algorithm
 Asymmetric encryption and signing algorithms are preferred over symmetric ones.
