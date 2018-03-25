@@ -4,12 +4,12 @@
 
 Network Working Group                                    O. Levi Hevroni
 Internet-Draft                                         Soluto by Asurion
-Intended status: Informational                            March 22, 2018
-Expires: September 23, 2018
+Intended status: Informational                            March 25, 2018
+Expires: September 26, 2018
 
 
-         Non-interactive OAuth 2.0 Client Authentication grant
-                       draft-seamless-flow-latest
+               Seamless OAuth 2.0 Client Assertion Grant
+                draft-hevroni-oauth-seamless-flow-latest
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 23, 2018.
+   This Internet-Draft will expire on September 26, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 1]
+Levi Hevroni           Expires September 26, 2018               [Page 1]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
 Table of Contents
@@ -87,7 +87,7 @@ Table of Contents
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
      7.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 2]
+Levi Hevroni           Expires September 26, 2018               [Page 2]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
    Also, there are cases for applications without any UI, for example -
@@ -165,9 +165,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 3]
+Levi Hevroni           Expires September 26, 2018               [Page 3]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
       will be able to perform authentication request until the JWT
@@ -188,8 +188,8 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
    and "OPTIONAL" are to be interpreted as described in [RFC2119].
 
-   The term "device" used in this document reffer to the phisical
-   applience used by the user, which the application code is running on.
+   The term "device" used in this document refer to the physical
+   appliance used by the user, which the application code is running on.
 
 2.  Note to Readers
 
@@ -197,7 +197,7 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
       publication.
 
    Development of this draft takes place on Github at:
-   https://github.com/Soluto/oauth-JWS-otp-client-assertion
+   https://github.com/Soluto/oauth-seamless-flow [1].
 
 3.  HTTP Parameter Bindings for Transporting Assertions
 
@@ -221,9 +221,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 4]
+Levi Hevroni           Expires September 26, 2018               [Page 4]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
    The following example demonstrates client authentication using a JWS
@@ -277,9 +277,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 5]
+Levi Hevroni           Expires September 26, 2018               [Page 5]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
    Where "client-id" is the id used when this client first registered.
@@ -333,9 +333,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 6]
+Levi Hevroni           Expires September 26, 2018               [Page 6]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
 5.2.  Compromised Signing key
@@ -367,7 +367,7 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    relatively simple.  It is highly recommended to use TLS [RFC5246] for
    all authentication requests.  It is also recommended to implement
    Certificate Pinning for all the requests.  For more details, please
-   refer to this guide [1] by OWASP.
+   refer to this guide [2] by OWASP.
 
 5.4.  Reverse Engineering
 
@@ -389,13 +389,13 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 7]
+Levi Hevroni           Expires September 26, 2018               [Page 7]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
    request.  It is still advised to store them securely, and follow the
-   operating system recommendation (iOS [2], Android [3]).
+   operating system recommendation (iOS [3], Android [4]).
 
 5.6.  Signing Key Consideration
 
@@ -404,9 +404,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
    A fundamental part of the security of the protocol is the key used to
    sign the JWS.  The key should be generated and stored in a secure
    wat, and if possible to use the tools provided by the OS.  On iOS,
-   use Keychain to generate and persist the key.  On Android, the best
-   option is the Key Store, but due to implementation limitations, it is
-   advised to use OpenSSL.
+   use Keychain [5] to generate and store the key.  On Android, the best
+   option is the Keystore [6], but due to implementation limitations
+   (see this post [7] for example), it is advised to use OpenSSL.
 
 5.6.2.  Algorithm
 
@@ -445,9 +445,9 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 8]
+Levi Hevroni           Expires September 26, 2018               [Page 8]
 
-Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
@@ -479,13 +479,32 @@ Internet-DraNon-interactive OAuth 2.0 Client Authentication   March 2018
 
 7.2.  URIs
 
-   [1] https://www.owasp.org/index.php/
+   [1] https://github.com/Soluto/oauth-seamless-flow
+
+   [2] https://www.owasp.org/index.php/
        Certificate_and_Public_Key_Pinning
 
-   [2] https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+   [3] https://www.apple.com/business/docs/iOS_Security_Guide.pdf
 
-   [3] https://developer.android.com/training/articles/security-
+   [4] https://developer.android.com/training/articles/security-
        tips.html#UserData
+
+   [5] https://developer.apple.com/documentation/security/
+       keychain_services/keychains
+
+   [6] https://developer.android.com/training/articles/keystore.html
+
+   [7] https://doridori.github.io/android-security-the-forgetful-
+       keystore/#sthash.CgPjGF4h.dpbs
+
+
+
+
+
+Levi Hevroni           Expires September 26, 2018               [Page 9]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
+
 
 Author's Address
 
@@ -501,4 +520,41 @@ Author's Address
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Levi Hevroni           Expires September 26, 2018              [Page 10]
