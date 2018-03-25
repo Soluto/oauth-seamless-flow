@@ -1,0 +1,664 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Seamless OAuth 2.0 Client Assertion Grant</title>
+
+  
+<style type="text/css">/*<![CDATA[*/
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+
+@media screen and (min-width: 1024px) {
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 550px);
+    width: 300px;
+    z-index: 1;
+  }
+  #rfc\.toc {
+    top: 55px;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  ul.toc, #rfc\.toc {
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  ul.toc li, #rfc\.toc li {
+    font-size: 15px;
+    line-height: 20px;
+    text-indent: 0;
+    padding-left: 1em;
+  }
+  body>ul.toc {
+    top: 140px;
+  }
+
+  body {
+    padding-right: 350px;
+  }
+}
+
+body {
+  font: 16px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333;
+  font-size-adjust: 0.5;
+  line-height: 24px;
+  margin: 75px auto;
+  max-width: 724px;
+}
+
+.title, .filename, h1, h2, h3, h4 {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size-adjust: 0.5;
+  font-weight: 500;
+  color: #333;
+  line-height: 100%;
+  margin: 0.8em 0 0.3em;
+}
+.title { font-size: 36px; }
+h1 { font-size: 36px; }
+h2 { font-size: 24px; }
+h3, h4 { font-size: 18px; }
+h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
+  color: #333;
+}
+
+ul.toc li {
+  list-style: none;
+  text-indent: -2.5em;
+  padding-left: 2.5em;
+  padding-bottom: 5px;
+  margin: 0;
+}
+ul.toc ul {
+  margin: 0;
+}
+/* xml2rfc nests ul directly inside ul which messes with the style badly */
+ul.toc, ul.toc>ul, ul.toc ul>ul {
+  margin: 0 0 0 1.5em;
+}
+
+table {
+  margin-left: 0em;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(2n+1) > td,
+tr:nth-child(2n+1) > th {
+  background-color: #f9f9f9;
+}
+td.reference {
+  max-width: 200px;
+  border-top: none;
+  padding-right: 1em;
+}
+.right {
+  text-align: right;
+}
+
+
+table.header {
+  width: 100%;
+}
+table.header td {
+  border: none;
+  background-color: transparent;
+  color: black;
+}
+.filename {
+  color: rgb(119, 119, 119);
+  font-size: 23px;
+  font-weight: normal;
+  height: auto;
+  line-height: 100%;
+}
+#rfc\.abstract+p, #rfc\.abstract p {
+  font-size: 18px;
+  line-height: 27px%;
+}
+
+samp, tt, code, pre {
+  font: 11pt consolas, monospace;
+  font-size-adjust: none;
+}
+pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  overflow-x: auto;
+  padding: 5px;
+  margin: 5px;
+}
+.figure {
+  font-style: italic;
+  margin: 0 1.5em;
+}
+
+address {
+  margin: 10px 0 0;
+}
+.vcard {
+  font-style: normal;
+}
+.vcardline {
+  display: block;
+}
+.vcardline .fn {
+  font-weight: bold;
+}
+.vcardline .hidden {
+  display: none;
+}
+
+dl {
+  margin-left: 1em;
+}
+dl.dl-horizontal: {
+  margin-left: 0;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+hr.noprint {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #2a6496;
+}
+a[href]:hover {
+  background-color: #eee;
+}
+
+ol, ul, li, p {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+li, p {
+  margin-left: 0;
+}
+address {
+  font-style: normal;
+}
+
+.github-fork-ribbon-wrapper {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  /* "Fork me on GitHub" CSS ribbon based on
+   * https://github.com/simonwhitaker/github-fork-ribbon-css
+   */
+  .github-fork-ribbon {
+    position: absolute;
+    padding: 2px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    pointer-events: auto;
+
+    top: 38px;
+    right: -45px;
+
+    transform: rotate(45deg);
+  }
+
+  .github-fork-ribbon a[href],
+  .github-fork-ribbon a[href]:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+
+    width: 190px;
+    line-height: 18px;
+
+    display: inline-block;
+    padding: 2px 0;
+
+    border: 1.5px dotted #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .github-fork-ribbon-wrapper {
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    overflow: hidden;
+    top: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .github-fork-ribbon-wrapper {
+    position: fixed;
+  }
+  /*]]>*/</style>
+
+
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Motivation">
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Existing Solutions">
+<link href="#rfc.section.1.2.1" rel="Chapter" title="1.2.1 Client Credentials grant">
+<link href="#rfc.section.1.2.2" rel="Chapter" title="1.2.2 Device grant">
+<link href="#rfc.section.1.2.3" rel="Chapter" title="1.2.3 JWT Client Assertion">
+<link href="#rfc.section.1.3" rel="Chapter" title="1.3 Terminology">
+<link href="#rfc.section.2" rel="Chapter" title="2 Note to Readers">
+<link href="#rfc.section.3" rel="Chapter" title="3 HTTP Parameter Bindings for Transporting Assertions">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Using OTP JWS for client authentication">
+<link href="#rfc.section.4" rel="Chapter" title="4 JWS format and request processing">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 One Time Password generation">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Creating the JWS">
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Request processing">
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations">
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Replay Attacks">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Compromised Signing key">
+<link href="#rfc.section.5.3" rel="Chapter" title="5.3 Man in the Middle">
+<link href="#rfc.section.5.4" rel="Chapter" title="5.4 Reverse Engineering">
+<link href="#rfc.section.5.5" rel="Chapter" title="5.5 OTP Generation">
+<link href="#rfc.section.5.6" rel="Chapter" title="5.6 Signing Key Consideration">
+<link href="#rfc.section.5.6.1" rel="Chapter" title="5.6.1 Generation and Storage">
+<link href="#rfc.section.5.6.2" rel="Chapter" title="5.6.2 Algorithm">
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations">
+<link href="#rfc.references" rel="Chapter" title="7 Normative References">
+<link href="#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Levi Hevroni, O." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-hevroni-oauth-seamless-flow-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-03-25" />
+  <meta name="dct.abstract" content="This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication." />
+  <meta name="description" content="This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">Network Working Group</td>
+<td class="right">O. Levi Hevroni</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right">Soluto by Asurion</td>
+</tr>
+<tr>
+<td class="left">Intended status: Informational</td>
+<td class="right">March 25, 2018</td>
+</tr>
+<tr>
+<td class="left">Expires: September 26, 2018</td>
+<td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Seamless OAuth 2.0 Client Assertion Grant<br />
+  <span class="filename">draft-hevroni-oauth-seamless-flow-latest</span></p>
+  
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication.</p>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on September 26, 2018.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<ul><li>1.1.   <a href="#rfc.section.1.1">Motivation</a>
+</li>
+<li>1.2.   <a href="#rfc.section.1.2">Existing Solutions</a>
+</li>
+<ul><li>1.2.1.   <a href="#rfc.section.1.2.1">Client Credentials grant</a>
+</li>
+<li>1.2.2.   <a href="#rfc.section.1.2.2">Device grant</a>
+</li>
+<li>1.2.3.   <a href="#rfc.section.1.2.3">JWT Client Assertion</a>
+</li>
+</ul><li>1.3.   <a href="#rfc.section.1.3">Terminology</a>
+</li>
+</ul><li>2.   <a href="#rfc.section.2">Note to Readers</a>
+</li>
+<li>3.   <a href="#rfc.section.3">HTTP Parameter Bindings for Transporting Assertions</a>
+</li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Using OTP JWS for client authentication</a>
+</li>
+</ul><li>4.   <a href="#rfc.section.4">JWS format and request processing</a>
+</li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">One Time Password generation</a>
+</li>
+<li>4.2.   <a href="#rfc.section.4.2">Creating the JWS</a>
+</li>
+<li>4.3.   <a href="#rfc.section.4.3">Request processing</a>
+</li>
+</ul><li>5.   <a href="#rfc.section.5">Security Considerations</a>
+</li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Replay Attacks</a>
+</li>
+<li>5.2.   <a href="#rfc.section.5.2">Compromised Signing key</a>
+</li>
+<li>5.3.   <a href="#rfc.section.5.3">Man in the Middle</a>
+</li>
+<li>5.4.   <a href="#rfc.section.5.4">Reverse Engineering</a>
+</li>
+<li>5.5.   <a href="#rfc.section.5.5">OTP Generation</a>
+</li>
+<li>5.6.   <a href="#rfc.section.5.6">Signing Key Consideration</a>
+</li>
+<ul><li>5.6.1.   <a href="#rfc.section.5.6.1">Generation and Storage</a>
+</li>
+<li>5.6.2.   <a href="#rfc.section.5.6.2">Algorithm</a>
+</li>
+</ul></ul><li>6.   <a href="#rfc.section.6">IANA Considerations</a>
+</li>
+<li>7.   <a href="#rfc.references">Normative References</a>
+</li>
+<li><a href="#rfc.authors">Author's Address</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
+</h1>
+<h1 id="rfc.section.1.1">
+<a href="#rfc.section.1.1">1.1.</a> <a href="#motivation" id="motivation">Motivation</a>
+</h1>
+<p id="rfc.section.1.1.p.1">Authentication is a crucial part of modern application. There are various authentication methods for client side applications, and all those methods requires user interaction (e.g. login). This is due to the fact that there is no secure way to embed credentials in the application code.</p>
+<p id="rfc.section.1.1.p.2">While asking the user to login in order to authenticate the app is a strong authentication solution, it has impact on the application behavior.  A login is just another step the user has to complete in order to use the apps, which users don&#8217;t always like to fulfill.</p>
+<p id="rfc.section.1.1.p.3">Also, there are cases for applications without any UI, for example - Internet of Things applications. For those applications, adding a login steps could be a challenge.</p>
+<p id="rfc.section.1.1.p.4">In this document, we propose an extension to OAuth 2.0 protocol that provides a new authentication grant dedicated for those cases.  This grant will allow an application to use strong authentication solution without user interaction.</p>
+<p id="rfc.section.1.1.p.5">This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client.  In order for the client to perform an authentication request, an initial registration step is required.  This registration step is not part of this protocol, and should be defined by the authorization server.</p>
+<h1 id="rfc.section.1.2">
+<a href="#rfc.section.1.2">1.2.</a> <a href="#existing-solutions" id="existing-solutions">Existing Solutions</a>
+</h1>
+<p id="rfc.section.1.2.p.1">There are alternatives to this protocol, this section will discuss them.  Interactive grants (authorization code, resource owner etc) will not be discussed.</p>
+<h1 id="rfc.section.1.2.1">
+<a href="#rfc.section.1.2.1">1.2.1.</a> <a href="#client-credentials-grant" id="client-credentials-grant">Client Credentials grant</a>
+</h1>
+<p id="rfc.section.1.2.1.p.1">This grant (as defined in <a href="#RFC6749" class="xref">[RFC6749]</a>) allows applications to authenticate without user interaction.  It is intend to be used by applications running on trusted environment.  Mobile applications are not running on trusted environment, and therefor should not use this grant.  See the Security section for discussion on the various threat and how this protocol mitigate them.  Also refer to section 10.1 in <a href="#RFC6749" class="xref">[RFC6749]</a>, which strongly advise against using this grant on native applications.</p>
+<h1 id="rfc.section.1.2.2">
+<a href="#rfc.section.1.2.2">1.2.2.</a> <a href="#device-grant" id="device-grant">Device grant</a>
+</h1>
+<p id="rfc.section.1.2.2.p.1">This grant is for Browserless and Input Constrained Devices.  In this grant the login is performed on a different device, which could handle interactive login.  Therefore, it still requires user interaction, which this protocol aims to avoid.</p>
+<h1 id="rfc.section.1.2.3">
+<a href="#rfc.section.1.2.3">1.2.3.</a> <a href="#jwt-client-assertion" id="jwt-client-assertion">JWT Client Assertion</a>
+</h1>
+<p id="rfc.section.1.2.3.p.1">This grant (as defined in <a href="#RFC7523" class="xref">[RFC7523]</a>) could be used by mobile application for seamless authentication.  The grant used signed JWT (see <a href="#RFC7519" class="xref">[RFC7519]</a>) to authenticate the client.  It has two disadvantages when compared with this grant:</p>
+<p></p>
+
+<ul>
+<li>Significant part of the security of the protocol is the expiration date of the JWT.  In case a hacker was able to obtain a JWT, she will be able to perform authentication request until the JWT expires.  Therefore, it is advised to use as shorter expiration time as possible.  Time can be a challenge on mobile devices, which are not always synchronized with the global time.  Usage of JWT would require the authorization server to allow very long JWT expiration time.</li>
+<li>Detecting Compromised Signing Key.  As discussed on the security section, this protocol allows the authorization server to detect compromised signing key.  See the discussion there for reference.  This mitigation does not exist in JWT client assertion grant.</li>
+</ul>
+<h1 id="rfc.section.1.3">
+<a href="#rfc.section.1.3">1.3.</a> <a href="#terminology" id="terminology">Terminology</a>
+</h1>
+<p id="rfc.section.1.3.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
+<p id="rfc.section.1.3.p.2">The term &#8220;device&#8221; used in this document refer to the physical appliance used by the user, which the application code is running on.</p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#note-to-readers" id="note-to-readers">Note to Readers</a>
+</h1>
+<p></p>
+
+<ul class="empty"><li>
+<strong>Note to the RFC Editor:</strong>  Please remove this section prior to publication.</li></ul>
+<p id="rfc.section.2.p.2">Development of this draft takes place on Github at: <a href="https://github.com/Soluto/oauth-seamless-flow">https://github.com/Soluto/oauth-seamless-flow</a>.</p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#http-parameter-bindings-for-transporting-assertions" id="http-parameter-bindings-for-transporting-assertions">HTTP Parameter Bindings for Transporting Assertions</a>
+</h1>
+<p id="rfc.section.3.p.1">The OAuth Assertion Framework <a href="#RFC7521" class="xref">[RFC7521]</a> defines generic HTTP parameters for transporting assertions (a.k.a. security tokens) during interactions with a token endpoint. This section defines specific parameters and treatments of those parameters for use with JWS (as defined in <a href="#RFC7515" class="xref">[RFC7515]</a>) Bearer Tokens.</p>
+<h1 id="rfc.section.3.1">
+<a href="#rfc.section.3.1">3.1.</a> <a href="#using-otp-jws-for-client-authentication" id="using-otp-jws-for-client-authentication">Using OTP JWS for client authentication</a>
+</h1>
+<p id="rfc.section.3.1.p.1">To use a OTP JWS, the client first need to generate the OTP as defined in section &#8220;JWS format and request processing&#8221;. Than, the client need to use the following parameter values and encodings.</p>
+<p id="rfc.section.3.1.p.2">The value of the &#8220;client_assertion_type&#8221; is &#8220;urn:ietf:params:oauth:client-assertion-type:JWS-otp&#8221;.</p>
+<p id="rfc.section.3.1.p.3">The value of the &#8220;client_assertion&#8221; parameter contains a single JWS, as defined in <a href="#RFC7515" class="xref">[RFC7515]</a>. It MUST NOT contain more than one JWS.</p>
+<p id="rfc.section.3.1.p.4">The following example demonstrates client authentication using a JWS during the presentation of an authorization code grant in an access token request (with extra line breaks for display purposes only):</p>
+<pre>
+     POST /token.oauth2 HTTP/1.1
+     Host: as.example.com
+     Content-Type: application/x-www-form-urlencoded
+
+     grant_type=token id_token&amp;&amp;
+     client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3A
+     client-assertion-type%3AJWS-otp&amp;
+     client_assertion=eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyIn0.
+     eyJpc3Mi[...omitted for brevity...].
+     cC4hiUPo[...omitted for brevity...]
+</pre>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#jws-format-and-request-processing" id="jws-format-and-request-processing">JWS format and request processing</a>
+</h1>
+<h1 id="rfc.section.4.1">
+<a href="#rfc.section.4.1">4.1.</a> <a href="#one-time-password-generation" id="one-time-password-generation">One Time Password generation</a>
+</h1>
+<p id="rfc.section.4.1.p.1">To generate one time password (OTP) as defined in <a href="#RFC2289" class="xref">[RFC2289]</a>, the client use its state, created during the registration request, which is not covered in this document.  The state consist from 2 numbers: <samp>previous</samp> and <samp>next</samp>.  Each of those numbers can hold signed int, up to 64 bytes length.  In order to generate a new JWS, the client has to roll this payload. The rolling is done by setting the value of <samp>previous</samp> to the value of <samp>current</samp>, and setting new crypto random, as defined in <a href="#RFC4086" class="xref">[RFC4086]</a>, value to <samp>next</samp>.  For example, assuming this is the current state of the app:</p>
+<pre>
+previous: 1
+next: 2
+</pre>
+<p id="rfc.section.4.1.p.2">After rolling, this will be the payload:</p>
+<pre>
+previous: 2
+next: 5
+</pre>
+<h1 id="rfc.section.4.2">
+<a href="#rfc.section.4.2">4.2.</a> <a href="#creating-the-jws" id="creating-the-jws">Creating the JWS</a>
+</h1>
+<p id="rfc.section.4.2.p.1">After rolling the payload, the client can create the JWS.  This is the format of the JWS payload:</p>
+<pre>
+{
+    previous: 2
+    next: 5
+    client-id: 89
+}
+</pre>
+<p id="rfc.section.4.2.p.2">Where <samp>client-id</samp> is the id used when this client first registered.  All the fields are required.  Any other fields besides those will be ignored.  To sign the JWS, the client use its own key, which was generated during the registration of this client.</p>
+<h1 id="rfc.section.4.3">
+<a href="#rfc.section.4.3">4.3.</a> <a href="#request-processing" id="request-processing">Request processing</a>
+</h1>
+<p id="rfc.section.4.3.p.1">In order to issue an access token response as described in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a>, the authorization server MUST validate the JWS according to the criteria below.  Application of additional restrictions and policy are at the discretion of the authorization server.  After decoding the JWS and extracting the <samp>client-id</samp>, the server will fetch:</p>
+<p></p>
+
+<ul>
+<li>The key correspond to this client, received on the registration request</li>
+<li>The current state of this client, from the last successful request, or from the registration</li>
+</ul>
+<p id="rfc.section.4.3.p.3">The server verifies that the JWS is valid, by using the client&#8217;s key.  If the signature is valid, the server can validate the payload:</p>
+<p></p>
+
+<ul>
+<li>If the client&#8217;s <samp>previous</samp> is equals to the server <samp>new</samp>, the request is valid. The server will issue a token, as specified in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a>
+</li>
+<li>If the client <samp>previous</samp> equals to the server <samp>previous</samp>, and the client <samp>next</samp> equals to the server <samp>next</samp>, the server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a>
+</li>
+<li>Any other case will be treated by the server as an indication of a malicious attack, and should be reported accordingly. The server construct an error response as defined in OAuth 2.0 <a href="#RFC6749" class="xref">[RFC6749]</a>
+</li>
+</ul>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.5.p.1">This protocol was designed for mobile application.  The following sections will discuss threats which are relevant for mobile applications and are mitigated by this protocol.</p>
+<h1 id="rfc.section.5.1">
+<a href="#rfc.section.5.1">5.1.</a> <a href="#replay-attacks" id="replay-attacks">Replay Attacks</a>
+</h1>
+<p id="rfc.section.5.1.p.1">Due to the usage of OTP, a replay attack is not feasible.  If an attacker will try to replay authentication request, an error response will return.  Also, because of how the OTP is generated, guessing it is almost impossible (see the OTP Generation section).  Refer to the Request processing section for more details.</p>
+<h1 id="rfc.section.5.2">
+<a href="#rfc.section.5.2">5.2.</a> <a href="#compromised-signing-key" id="compromised-signing-key">Compromised Signing key</a>
+</h1>
+<p id="rfc.section.5.2.p.1">As the application is running on a mobile device, an attacker can gain physical access to the device.  In such a scenario, the attacker will be able to compromise it and retrieve the state and the signing key.  This will allows the attacker to impersonate the device and request an access token.  The attacker will be able to authenticate as until the first time the device will try to authenticate.  When the device will try to authenticate, the request will fail.  It will fail because the state on the authorization server will match the attacker&#8217;s state, not the one on the device.</p>
+<p id="rfc.section.5.2.p.2">The device authentication request will revoke the client (see Request processing section).  This will cause both the device and the attacker to not be able to perform authentication request.  In such cases, an alternative flow is required in order to allow the device to authenticate.  Such a flow is not part of this standard.</p>
+<p id="rfc.section.5.2.p.3">In order for this mitigation to be effective, the device must to perform an authentication request on a regular basis.  The period between authentication requests should be 24 hours or less, depend on the client.</p>
+<h1 id="rfc.section.5.3">
+<a href="#rfc.section.5.3">5.3.</a> <a href="#man-in-the-middle" id="man-in-the-middle">Man in the Middle</a>
+</h1>
+<p id="rfc.section.5.3.p.1">Performing Man in the Middle (MitM) attack on mobile application is relatively simple.  It is highly recommended to use TLS <a href="#RFC5246" class="xref">[RFC5246]</a> for all authentication requests.  It is also recommended to implement Certificate Pinning for all the requests.  For more details, please refer to this <a href="https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning">guide</a> by OWASP.</p>
+<h1 id="rfc.section.5.4">
+<a href="#rfc.section.5.4">5.4.</a> <a href="#reverse-engineering" id="reverse-engineering">Reverse Engineering</a>
+</h1>
+<p id="rfc.section.5.4.p.1">The mobile application code is publicly available, which make reverse engineering a simple task.  This attack is irrelevant to this protocol.  No sensitive data should be embedded in the application code.  All that is required for the authentication request should be generated on the device.</p>
+<h1 id="rfc.section.5.5">
+<a href="#rfc.section.5.5">5.5.</a> <a href="#otp-generation" id="otp-generation">OTP Generation</a>
+</h1>
+<p id="rfc.section.5.5.p.1">The security of the OTP is as strong as the randomness used to generate it.  Only strong, secure random implementation (as described in <a href="#RFC4086" class="xref">[RFC4086]</a>) should be used.  Usage of weak random protocol will allow the attacker to guess the numbers generated by the client, and by that generates the OTP herself.  The state (<samp>next</samp> and <samp>new</samp>) is not considered a secret.  Compromise of state only, without the signing key, will not allows the attacker to perform authentication request.  It is still advised to store them securely, and follow the operating system recommendation (<a href="https://www.apple.com/business/docs/iOS_Security_Guide.pdf">iOS</a>, <a href="https://developer.android.com/training/articles/security-tips.html#UserData">Android</a>).</p>
+<h1 id="rfc.section.5.6">
+<a href="#rfc.section.5.6">5.6.</a> <a href="#signing-key-consideration" id="signing-key-consideration">Signing Key Consideration</a>
+</h1>
+<h1 id="rfc.section.5.6.1">
+<a href="#rfc.section.5.6.1">5.6.1.</a> <a href="#generation-and-storage" id="generation-and-storage">Generation and Storage</a>
+</h1>
+<p id="rfc.section.5.6.1.p.1">A fundamental part of the security of the protocol is the key used to sign the JWS.  The key should be generated and stored in a secure wat, and if possible to use the tools provided by the OS.  On iOS, use <a href="https://developer.apple.com/documentation/security/keychain_services/keychains">Keychain</a> to generate and store the key.  On Android, the best option is the <a href="https://developer.android.com/training/articles/keystore.html">Keystore</a>, but due to implementation limitations (see this <a href="https://doridori.github.io/android-security-the-forgetful-keystore/#sthash.CgPjGF4h.dpbs">post</a> for example), it is advised to use OpenSSL.</p>
+<h1 id="rfc.section.5.6.2">
+<a href="#rfc.section.5.6.2">5.6.2.</a> <a href="#algorithm" id="algorithm">Algorithm</a>
+</h1>
+<p id="rfc.section.5.6.2.p.1">Asymmetric encryption and signing algorithms are preferred over symmetric ones.  The main advantages of such protocol is that the private key never leaves the device.  Even if an attacker was able to capture the public key (either in transit or by compromising the authorization server), she will not be able to use it to perform authentication request.  For any algorithm that is chosen, a strong key should be generated.  In case of RSA, 2048 bytes is the minimum key size.</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<p id="rfc.section.6.p.1">TODO IANA</p>
+<h1 id="rfc.references">
+<a href="#rfc.references">7.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2289">[RFC2289]</b></td>
+<td class="top">
+<a>Haller, N.</a>, <a>Metz, C.</a>, <a>Nesser, P.</a> and <a>M. Straw</a>, "<a href="https://tools.ietf.org/html/rfc2289">A One-Time Password System</a>", STD 61, RFC 2289, DOI 10.17487/RFC2289, February 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4086">[RFC4086]</b></td>
+<td class="top">
+<a>Eastlake 3rd, D.</a>, <a>Schiller, J.</a> and <a>S. Crocker</a>, "<a href="https://tools.ietf.org/html/rfc4086">Randomness Requirements for Security</a>", BCP 106, RFC 4086, DOI 10.17487/RFC4086, June 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5246">[RFC5246]</b></td>
+<td class="top">
+<a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6749">[RFC6749]</b></td>
+<td class="top">
+<a>Hardt, D.</a>, "<a href="https://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</a>", RFC 6749, DOI 10.17487/RFC6749, October 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7515">[RFC7515]</b></td>
+<td class="top">
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7515">JSON Web Signature (JWS)</a>", RFC 7515, DOI 10.17487/RFC7515, May 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7519">[RFC7519]</b></td>
+<td class="top">
+<a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="https://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7521">[RFC7521]</b></td>
+<td class="top">
+<a>Campbell, B.</a>, <a>Mortimore, C.</a>, <a>Jones, M.</a> and <a>Y. Goland</a>, "<a href="https://tools.ietf.org/html/rfc7521">Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants</a>", RFC 7521, DOI 10.17487/RFC7521, May 2015.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7523">[RFC7523]</b></td>
+<td class="top">
+<a>Jones, M.</a>, <a>Campbell, B.</a> and <a>C. Mortimore</a>, "<a href="https://tools.ietf.org/html/rfc7523">JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</a>", RFC 7523, DOI 10.17487/RFC7523, May 2015.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.authors"><a href="#rfc.authors">Author's Address</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Omer Levi Hevroni</span> 
+	  <span class="n hidden">
+		<span class="family-name">Levi Hevroni</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Soluto by Asurion</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:omerlh@gmail.com">omerlh@gmail.com</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
