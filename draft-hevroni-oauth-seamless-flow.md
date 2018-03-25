@@ -1,6 +1,6 @@
 ---
 title: Seamless OAuth 2.0 Client Assertion Grant
-docname: draft-seamless-flow-latest
+docname: draft-hevroni-oauth-seamless-flow-latest
 ipr: trust200902
 cat: info
 pi:
