@@ -4,12 +4,12 @@
 
 Network Working Group                                    O. Levi Hevroni
 Internet-Draft                                         Soluto by Asurion
-Intended status: Informational                            March 22, 2018
-Expires: September 23, 2018
+Intended status: Informational                           August 02, 2018
+Expires: February 3, 2019
 
 
                Seamless OAuth 2.0 Client Assertion Grant
-                       draft-seamless-flow-latest
+                draft-hevroni-oauth-seamless-flow-latest
 
 Abstract
 
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 23, 2018.
+   This Internet-Draft will expire on February 3, 2019.
 
 Copyright Notice
 
@@ -53,40 +53,41 @@ Copyright Notice
 
 
 
-Levi Hevroni           Expires September 23, 2018               [Page 1]
+Levi Hevroni            Expires February 3, 2019                [Page 1]
 
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
 
 
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Motivation  . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.2.  Existing Solutions  . . . . . . . . . . . . . . . . . . .   3
-       1.2.1.  Client Credentials grant  . . . . . . . . . . . . . .   3
-       1.2.2.  Device grant  . . . . . . . . . . . . . . . . . . . .   3
-       1.2.3.  JWT Client Assertion  . . . . . . . . . . . . . . . .   3
-     1.3.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.2.  Target Audience . . . . . . . . . . . . . . . . . . . . .   3
+     1.3.  Existing Solutions  . . . . . . . . . . . . . . . . . . .   3
+       1.3.1.  Client Credentials grant  . . . . . . . . . . . . . .   3
+       1.3.2.  Device grant  . . . . . . . . . . . . . . . . . . . .   3
+       1.3.3.  JWT Client Assertion  . . . . . . . . . . . . . . . .   4
+     1.4.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Note to Readers . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  HTTP Parameter Bindings for Transporting Assertions . . . . .   4
-     3.1.  Using OTP JWS for client authentication . . . . . . . . .   4
+     3.1.  Using OTP JWS for client authentication . . . . . . . . .   5
    4.  JWS format and request processing . . . . . . . . . . . . . .   5
      4.1.  One Time Password generation  . . . . . . . . . . . . . .   5
-     4.2.  Creating the JWS  . . . . . . . . . . . . . . . . . . . .   5
+     4.2.  Creating the JWS  . . . . . . . . . . . . . . . . . . . .   6
      4.3.  Request processing  . . . . . . . . . . . . . . . . . . .   6
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-     5.1.  Replay Attacks  . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+     5.1.  Replay Attacks  . . . . . . . . . . . . . . . . . . . . .   7
      5.2.  Compromised Signing key . . . . . . . . . . . . . . . . .   7
      5.3.  Man in the Middle . . . . . . . . . . . . . . . . . . . .   7
-     5.4.  Reverse Engineering . . . . . . . . . . . . . . . . . . .   7
-     5.5.  OTP Generation  . . . . . . . . . . . . . . . . . . . . .   7
+     5.4.  Reverse Engineering . . . . . . . . . . . . . . . . . . .   8
+     5.5.  OTP Generation  . . . . . . . . . . . . . . . . . . . . .   8
      5.6.  Signing Key Consideration . . . . . . . . . . . . . . . .   8
        5.6.1.  Generation and Storage  . . . . . . . . . . . . . . .   8
        5.6.2.  Algorithm . . . . . . . . . . . . . . . . . . . . . .   8
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     7.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
+     7.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
 
 1.  Introduction
@@ -108,10 +109,9 @@ Table of Contents
 
 
 
-
-Levi Hevroni           Expires September 23, 2018               [Page 2]
+Levi Hevroni            Expires February 3, 2019                [Page 2]
 
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
 
 
    Also, there are cases for applications without any UI, for example -
@@ -129,13 +129,22 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    required.  This registration step is not part of this protocol, and
    should be defined by the authorization server.
 
-1.2.  Existing Solutions
+1.2.  Target Audience
+
+   The protocol requires the app to be able to persist state in a
+   secure, sand-boxed, persisted storage.  It is possible to use this
+   protocol for web application, although it is not recommended.  This
+   protocol is targeted for mobile or IoT devices where it is possible
+   (although not always simple) to achieve such storage.  See Security
+   Consideration section for more details.
+
+1.3.  Existing Solutions
 
    There are alternatives to this protocol, this section will discuss
    them.  Interactive grants (authorization code, resource owner etc)
    will not be discussed.
 
-1.2.1.  Client Credentials grant
+1.3.1.  Client Credentials grant
 
    This grant (as defined in [RFC6749]) allows applications to
    authenticate without user interaction.  It is intend to be used by
@@ -146,14 +155,22 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    [RFC6749], which strongly advise against using this grant on native
    applications.
 
-1.2.2.  Device grant
+1.3.2.  Device grant
 
    This grant is for Browserless and Input Constrained Devices.  In this
    grant the login is performed on a different device, which could
    handle interactive login.  Therefore, it still requires user
    interaction, which this protocol aims to avoid.
 
-1.2.3.  JWT Client Assertion
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 3]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
+1.3.3.  JWT Client Assertion
 
    This grant (as defined in [RFC7523]) could be used by mobile
    application for seamless authentication.  The grant used signed JWT
@@ -162,14 +179,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
    o  Significant part of the security of the protocol is the expiration
       date of the JWT.  In case a hacker was able to obtain a JWT, she
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 3]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
-
       will be able to perform authentication request until the JWT
       expires.  Therefore, it is advised to use as shorter expiration
       time as possible.  Time can be a challenge on mobile devices,
@@ -182,7 +191,7 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
       compromised signing key.  See the discussion there for reference.
       This mitigation does not exist in JWT client assertion grant.
 
-1.3.  Terminology
+1.4.  Terminology
 
    In this document, the key words "MUST", "MUST NOT", "REQUIRED",
    "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
@@ -207,6 +216,16 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    specific parameters and treatments of those parameters for use with
    JWS (as defined in [RFC7515]) Bearer Tokens.
 
+
+
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 4]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 3.1.  Using OTP JWS for client authentication
 
    To use a OTP JWS, the client first need to generate the OTP as
@@ -218,13 +237,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
    The value of the "client_assertion" parameter contains a single JWS,
    as defined in [RFC7515].  It MUST NOT contain more than one JWS.
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 4]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
 
    The following example demonstrates client authentication using a JWS
    during the presentation of an authorization code grant in an access
@@ -263,6 +275,13 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    previous: 2
    next: 5
 
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 5]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 4.2.  Creating the JWS
 
    After rolling the payload, the client can create the JWS.  This is
@@ -273,14 +292,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
        next: 5
        client-id: 89
    }
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 5]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
 
    Where "client-id" is the id used when this client first registered.
    All the fields are required.  Any other fields besides those will be
@@ -317,6 +328,16 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
       malicious attack, and should be reported accordingly.  The server
       construct an error response as defined in OAuth 2.0 [RFC6749]
 
+
+
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 6]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 5.  Security Considerations
 
    This protocol was designed for mobile application.  The following
@@ -330,13 +351,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    will return.  Also, because of how the OTP is generated, guessing it
    is almost impossible (see the OTP Generation section).  Refer to the
    Request processing section for more details.
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 6]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
 
 5.2.  Compromised Signing key
 
@@ -369,6 +383,17 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    Certificate Pinning for all the requests.  For more details, please
    refer to this guide [2] by OWASP.
 
+
+
+
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 7]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 5.4.  Reverse Engineering
 
    The mobile application code is publicly available, which make reverse
@@ -386,14 +411,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    by that generates the OTP herself.  The state ("next" and "new") is
    not considered a secret.  Compromise of state only, without the
    signing key, will not allows the attacker to perform authentication
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 7]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
-
    request.  It is still advised to store them securely, and follow the
    operating system recommendation (iOS [3], Android [4]).
 
@@ -423,6 +440,16 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
 
    TODO IANA
 
+
+
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 8]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 7.  References
 
 7.1.  Normative References
@@ -441,14 +468,6 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
               "Randomness Requirements for Security", BCP 106, RFC 4086,
               DOI 10.17487/RFC4086, June 2005,
               <https://www.rfc-editor.org/info/rfc4086>.
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 8]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
@@ -477,6 +496,16 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
               Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May
               2015, <https://www.rfc-editor.org/info/rfc7523>.
 
+
+
+
+
+
+Levi Hevroni            Expires February 3, 2019                [Page 9]
+
+Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant    August 2018
+
+
 7.2.  URIs
 
    [1] https://github.com/Soluto/oauth-seamless-flow
@@ -497,21 +526,12 @@ Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
    [7] https://doridori.github.io/android-security-the-forgetful-
        keystore/#sthash.CgPjGF4h.dpbs
 
-
-
-
-
-Levi Hevroni           Expires September 23, 2018               [Page 9]
-
-Internet-Draft  Seamless OAuth 2.0 Client Assertion Grant     March 2018
-
-
 Author's Address
 
    Omer Levi Hevroni
    Soluto by Asurion
 
-   Email: omerlh@gmail.com
+   Email: omer.levihevroni@owasp.org
 
 
 
@@ -537,24 +557,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Levi Hevroni           Expires September 23, 2018              [Page 10]
+Levi Hevroni            Expires February 3, 2019               [Page 10]
