@@ -9,86 +9,30 @@
 
   
 <style type="text/css">/*<![CDATA[*/
-@viewport {
-  zoom: 1.0;
-  width: extend-to-zoom;
-}
-@-ms-viewport {
-  width: extend-to-zoom;
-  zoom: 1.0;
-}
-
-@media screen and (min-width: 1024px) {
-  body>ul.toc, body>#rfc\.toc {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    right: calc(50vw - 550px);
-    width: 300px;
-    z-index: 1;
-  }
-  #rfc\.toc {
-    top: 55px;
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  ul.toc, #rfc\.toc {
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  ul.toc li, #rfc\.toc li {
-    font-size: 15px;
-    line-height: 20px;
-    text-indent: 0;
-    padding-left: 1em;
-  }
-  body>ul.toc {
-    top: 140px;
-  }
-
-  body {
-    padding-right: 350px;
-  }
-}
 
 body {
-  font: 16px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font: 16px "Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   color: #333;
   font-size-adjust: 0.5;
   line-height: 24px;
   margin: 75px auto;
-  max-width: 724px;
+  max-width: 624px;
+  padding: 0 5px;
 }
 
-.title, .filename, h1, h2, h3, h4 {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+.title, .filename, h1, h2, h3, h4, h5 {
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   font-size-adjust: 0.5;
-  font-weight: 500;
+  font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
-.title { font-size: 36px; }
-h1 { font-size: 36px; }
-h2 { font-size: 24px; }
-h3, h4 { font-size: 18px; }
+.title, #rfc\.title h1 { font-size: 32px; }
+h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
+h3, section h4, h4, section h5 { font-size: 16px; }
 h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
   color: #333;
-}
-
-ul.toc li {
-  list-style: none;
-  text-indent: -2.5em;
-  padding-left: 2.5em;
-  padding-bottom: 5px;
-  margin: 0;
-}
-ul.toc ul {
-  margin: 0;
-}
-/* xml2rfc nests ul directly inside ul which messes with the style badly */
-ul.toc, ul.toc>ul, ul.toc ul>ul {
-  margin: 0 0 0 1.5em;
 }
 
 table {
@@ -117,28 +61,30 @@ td.reference {
 }
 
 
-table.header {
+table.header, table#rfc\.headerblock {
   width: 100%;
 }
-table.header td {
+table.header td, table#rfc\.headerblock td {
   border: none;
   background-color: transparent;
   color: black;
+  padding: 0;
 }
 .filename {
+  display: block;
   color: rgb(119, 119, 119);
-  font-size: 23px;
+  font-size: 20px;
   font-weight: normal;
-  height: auto;
   line-height: 100%;
+  margin: 10px 0 32px;
 }
 #rfc\.abstract+p, #rfc\.abstract p {
-  font-size: 18px;
-  line-height: 27px%;
+  font-size: 20px;
+  line-height: 28px;
 }
 
 samp, tt, code, pre {
-  font: 11pt consolas, monospace;
+  font: 15px Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -148,13 +94,15 @@ pre {
   padding: 5px;
   margin: 5px;
 }
-.figure {
+.figure, caption {
   font-style: italic;
   margin: 0 1.5em;
+  text-align: left;
 }
 
 address {
-  margin: 10px 0 0;
+  margin: 16px 2px;
+  line-height: 20px;
 }
 .vcard {
   font-style: normal;
@@ -162,8 +110,8 @@ address {
 .vcardline {
   display: block;
 }
-.vcardline .fn {
-  font-weight: bold;
+.vcardline .fn, address b {
+  font-weight: normal;
 }
 .vcardline .hidden {
   display: none;
@@ -217,15 +165,59 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
+}
+
+ul.toc ul {
+  margin: 0 0 0 2em;
+}
+ul.toc li {
+  list-style: none;
+  margin: 0;
+}
+
+@media screen and (min-width: 924px) {
+  body {
+    padding-right: 350px;
+  }
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    z-index: 1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>#rfc\.toc {
+    top: 55px;
+  }
+  body>ul.toc {
+    top: 100px;
+  }
+
+  ul.toc {
+    margin: 0 0 0 4px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  ul.toc ul {
+    margin-left: 1.2em;
+  }
 }
 
 .github-fork-ribbon-wrapper {
@@ -285,16 +277,18 @@ address {
     position: fixed;
   }
   /*]]>*/</style>
+  <meta name="viewport" content="initial-scale=1.0">
 
 
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Motivation">
-<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Existing Solutions">
-<link href="#rfc.section.1.2.1" rel="Chapter" title="1.2.1 Client Credentials grant">
-<link href="#rfc.section.1.2.2" rel="Chapter" title="1.2.2 Device grant">
-<link href="#rfc.section.1.2.3" rel="Chapter" title="1.2.3 JWT Client Assertion">
-<link href="#rfc.section.1.3" rel="Chapter" title="1.3 Terminology">
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Target Audience">
+<link href="#rfc.section.1.3" rel="Chapter" title="1.3 Existing Solutions">
+<link href="#rfc.section.1.3.1" rel="Chapter" title="1.3.1 Client Credentials grant">
+<link href="#rfc.section.1.3.2" rel="Chapter" title="1.3.2 Device grant">
+<link href="#rfc.section.1.3.3" rel="Chapter" title="1.3.3 JWT Client Assertion">
+<link href="#rfc.section.1.4" rel="Chapter" title="1.4 Terminology">
 <link href="#rfc.section.2" rel="Chapter" title="2 Note to Readers">
 <link href="#rfc.section.3" rel="Chapter" title="3 HTTP Parameter Bindings for Transporting Assertions">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Using OTP JWS for client authentication">
@@ -316,12 +310,12 @@ address {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Levi Hevroni, O." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-hevroni-oauth-seamless-flow-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-03-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-02" />
   <meta name="dct.abstract" content="This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication." />
   <meta name="description" content="This specification defines the use of a One Time Password, encoded as JSON Web Token (JWS) Bearer Token, as a means for requesting an OAuth 2.0 access token as well as for client authentication." />
 
@@ -342,10 +336,10 @@ address {
 </tr>
 <tr>
 <td class="left">Intended status: Informational</td>
-<td class="right">March 25, 2018</td>
+<td class="right">August 02, 2018</td>
 </tr>
 <tr>
-<td class="left">Expires: September 26, 2018</td>
+<td class="left">Expires: February 3, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -362,7 +356,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 26, 2018.</p>
+<p>This Internet-Draft will expire on February 3, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -376,15 +370,17 @@ address {
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Motivation</a>
 </li>
-<li>1.2.   <a href="#rfc.section.1.2">Existing Solutions</a>
+<li>1.2.   <a href="#rfc.section.1.2">Target Audience</a>
 </li>
-<ul><li>1.2.1.   <a href="#rfc.section.1.2.1">Client Credentials grant</a>
+<li>1.3.   <a href="#rfc.section.1.3">Existing Solutions</a>
 </li>
-<li>1.2.2.   <a href="#rfc.section.1.2.2">Device grant</a>
+<ul><li>1.3.1.   <a href="#rfc.section.1.3.1">Client Credentials grant</a>
 </li>
-<li>1.2.3.   <a href="#rfc.section.1.2.3">JWT Client Assertion</a>
+<li>1.3.2.   <a href="#rfc.section.1.3.2">Device grant</a>
 </li>
-</ul><li>1.3.   <a href="#rfc.section.1.3">Terminology</a>
+<li>1.3.3.   <a href="#rfc.section.1.3.3">JWT Client Assertion</a>
+</li>
+</ul><li>1.4.   <a href="#rfc.section.1.4">Terminology</a>
 </li>
 </ul><li>2.   <a href="#rfc.section.2">Note to Readers</a>
 </li>
@@ -440,32 +436,36 @@ address {
 <p id="rfc.section.1.1.p.4">In this document, we propose an extension to OAuth 2.0 protocol that provides a new authentication grant dedicated for those cases.  This grant will allow an application to use strong authentication solution without user interaction.</p>
 <p id="rfc.section.1.1.p.5">This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client.  In order for the client to perform an authentication request, an initial registration step is required.  This registration step is not part of this protocol, and should be defined by the authorization server.</p>
 <h1 id="rfc.section.1.2">
-<a href="#rfc.section.1.2">1.2.</a> <a href="#existing-solutions" id="existing-solutions">Existing Solutions</a>
+<a href="#rfc.section.1.2">1.2.</a> <a href="#target-audience" id="target-audience">Target Audience</a>
 </h1>
-<p id="rfc.section.1.2.p.1">There are alternatives to this protocol, this section will discuss them.  Interactive grants (authorization code, resource owner etc) will not be discussed.</p>
-<h1 id="rfc.section.1.2.1">
-<a href="#rfc.section.1.2.1">1.2.1.</a> <a href="#client-credentials-grant" id="client-credentials-grant">Client Credentials grant</a>
+<p id="rfc.section.1.2.p.1">The protocol requires the app to be able to persist state in a secure, sand-boxed, persisted storage.  It is possible to use this protocol for web application, although it is not recommended.  This protocol is targeted for mobile or IoT devices where it is possible (although not always simple) to achieve such storage.  See Security Consideration section for more details.</p>
+<h1 id="rfc.section.1.3">
+<a href="#rfc.section.1.3">1.3.</a> <a href="#existing-solutions" id="existing-solutions">Existing Solutions</a>
 </h1>
-<p id="rfc.section.1.2.1.p.1">This grant (as defined in <a href="#RFC6749" class="xref">[RFC6749]</a>) allows applications to authenticate without user interaction.  It is intend to be used by applications running on trusted environment.  Mobile applications are not running on trusted environment, and therefor should not use this grant.  See the Security section for discussion on the various threat and how this protocol mitigate them.  Also refer to section 10.1 in <a href="#RFC6749" class="xref">[RFC6749]</a>, which strongly advise against using this grant on native applications.</p>
-<h1 id="rfc.section.1.2.2">
-<a href="#rfc.section.1.2.2">1.2.2.</a> <a href="#device-grant" id="device-grant">Device grant</a>
+<p id="rfc.section.1.3.p.1">There are alternatives to this protocol, this section will discuss them.  Interactive grants (authorization code, resource owner etc) will not be discussed.</p>
+<h1 id="rfc.section.1.3.1">
+<a href="#rfc.section.1.3.1">1.3.1.</a> <a href="#client-credentials-grant" id="client-credentials-grant">Client Credentials grant</a>
 </h1>
-<p id="rfc.section.1.2.2.p.1">This grant is for Browserless and Input Constrained Devices.  In this grant the login is performed on a different device, which could handle interactive login.  Therefore, it still requires user interaction, which this protocol aims to avoid.</p>
-<h1 id="rfc.section.1.2.3">
-<a href="#rfc.section.1.2.3">1.2.3.</a> <a href="#jwt-client-assertion" id="jwt-client-assertion">JWT Client Assertion</a>
+<p id="rfc.section.1.3.1.p.1">This grant (as defined in <a href="#RFC6749" class="xref">[RFC6749]</a>) allows applications to authenticate without user interaction.  It is intend to be used by applications running on trusted environment.  Mobile applications are not running on trusted environment, and therefor should not use this grant.  See the Security section for discussion on the various threat and how this protocol mitigate them.  Also refer to section 10.1 in <a href="#RFC6749" class="xref">[RFC6749]</a>, which strongly advise against using this grant on native applications.</p>
+<h1 id="rfc.section.1.3.2">
+<a href="#rfc.section.1.3.2">1.3.2.</a> <a href="#device-grant" id="device-grant">Device grant</a>
 </h1>
-<p id="rfc.section.1.2.3.p.1">This grant (as defined in <a href="#RFC7523" class="xref">[RFC7523]</a>) could be used by mobile application for seamless authentication.  The grant used signed JWT (see <a href="#RFC7519" class="xref">[RFC7519]</a>) to authenticate the client.  It has two disadvantages when compared with this grant:</p>
+<p id="rfc.section.1.3.2.p.1">This grant is for Browserless and Input Constrained Devices.  In this grant the login is performed on a different device, which could handle interactive login.  Therefore, it still requires user interaction, which this protocol aims to avoid.</p>
+<h1 id="rfc.section.1.3.3">
+<a href="#rfc.section.1.3.3">1.3.3.</a> <a href="#jwt-client-assertion" id="jwt-client-assertion">JWT Client Assertion</a>
+</h1>
+<p id="rfc.section.1.3.3.p.1">This grant (as defined in <a href="#RFC7523" class="xref">[RFC7523]</a>) could be used by mobile application for seamless authentication.  The grant used signed JWT (see <a href="#RFC7519" class="xref">[RFC7519]</a>) to authenticate the client.  It has two disadvantages when compared with this grant:</p>
 <p></p>
 
 <ul>
 <li>Significant part of the security of the protocol is the expiration date of the JWT.  In case a hacker was able to obtain a JWT, she will be able to perform authentication request until the JWT expires.  Therefore, it is advised to use as shorter expiration time as possible.  Time can be a challenge on mobile devices, which are not always synchronized with the global time.  Usage of JWT would require the authorization server to allow very long JWT expiration time.</li>
 <li>Detecting Compromised Signing Key.  As discussed on the security section, this protocol allows the authorization server to detect compromised signing key.  See the discussion there for reference.  This mitigation does not exist in JWT client assertion grant.</li>
 </ul>
-<h1 id="rfc.section.1.3">
-<a href="#rfc.section.1.3">1.3.</a> <a href="#terminology" id="terminology">Terminology</a>
+<h1 id="rfc.section.1.4">
+<a href="#rfc.section.1.4">1.4.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
-<p id="rfc.section.1.3.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
-<p id="rfc.section.1.3.p.2">The term &#8220;device&#8221; used in this document refer to the physical appliance used by the user, which the application code is running on.</p>
+<p id="rfc.section.1.4.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
+<p id="rfc.section.1.4.p.2">The term &#8220;device&#8221; used in this document refer to the physical appliance used by the user, which the application code is running on.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#note-to-readers" id="note-to-readers">Note to Readers</a>
 </h1>
@@ -655,7 +655,7 @@ next: 5
 	  </span>
 	  <span class="country-name vcardline"></span>
 	</span>
-	<span class="vcardline">EMail: <a href="mailto:omerlh@gmail.com">omerlh@gmail.com</a></span>
+	<span class="vcardline">EMail: <a href="mailto:omer.levihevroni@owasp.org">omer.levihevroni@owasp.org</a></span>
 
   </address>
 </div>
