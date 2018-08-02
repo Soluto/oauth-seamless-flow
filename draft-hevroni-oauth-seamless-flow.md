@@ -11,7 +11,7 @@ pi:
 author:
 - ins: O. Levi Hevroni
   name: Omer Levi Hevroni
-  email: omerlh@gmail.com
+  email: omer.levihevroni@owasp.org
   organization: Soluto by Asurion
 
 --- abstract
@@ -37,6 +37,12 @@ This grant will allow an application to use strong authentication solution witho
 This document defines how a One Time Password, encoded in a JWS, can be used to authenticate the client. 
 In order for the client to perform an authentication request, an initial registration step is required.
 This registration step is not part of this protocol, and should be defined by the authorization server.
+
+## Target Audience
+The protocol requires the app to be able to persist state in a secure, sand-boxed, persisted storage. 
+It is possible to use this protocol for web application, although it is not recommended. 
+This protocol is targeted for mobile or IoT devices where it is possible (although not always simple) to achieve such storage.
+See Security Consideration section for more details.
 
 ## Existing Solutions
 
