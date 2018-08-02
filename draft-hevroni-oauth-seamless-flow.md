@@ -11,7 +11,7 @@ pi:
 author:
 - ins: O. Levi Hevroni
   name: Omer Levi Hevroni
-  email: omer.levihevroni@owasp.org
+  email: omerlh@gmail.com
   organization: Soluto by Asurion
 
 --- abstract
