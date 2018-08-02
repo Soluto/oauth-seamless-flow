@@ -65,6 +65,10 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: "Install Dependencies"
+          command: "apk --no-cache add python make g++"
+
       - restore_cache:
           keys:
             - npm-reference
