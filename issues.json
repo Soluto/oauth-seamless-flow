@@ -1,0 +1,52 @@
+[
+
+  {
+    "url": "https://api.github.com/repos/Soluto/oauth-seamless-flow/issues/1",
+    "repository_url": "https://api.github.com/repos/Soluto/oauth-seamless-flow",
+    "labels_url": "https://api.github.com/repos/Soluto/oauth-seamless-flow/issues/1/labels{/name}",
+    "comments_url": "https://api.github.com/repos/Soluto/oauth-seamless-flow/issues/1/comments",
+    "events_url": "https://api.github.com/repos/Soluto/oauth-seamless-flow/issues/1/events",
+    "html_url": "https://github.com/Soluto/oauth-seamless-flow/issues/1",
+    "id": 306224055,
+    "node_id": "MDU6SXNzdWUzMDYyMjQwNTU=",
+    "number": 1,
+    "title": "Add clarification about mobile/web",
+    "user": {
+      "login": "omerlh",
+      "id": 6730584,
+      "node_id": "MDQ6VXNlcjY3MzA1ODQ=",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6730584?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/omerlh",
+      "html_url": "https://github.com/omerlh",
+      "followers_url": "https://api.github.com/users/omerlh/followers",
+      "following_url": "https://api.github.com/users/omerlh/following{/other_user}",
+      "gists_url": "https://api.github.com/users/omerlh/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/omerlh/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/omerlh/subscriptions",
+      "organizations_url": "https://api.github.com/users/omerlh/orgs",
+      "repos_url": "https://api.github.com/users/omerlh/repos",
+      "events_url": "https://api.github.com/users/omerlh/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/omerlh/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2018-03-18T09:03:16Z",
+    "updated_at": "2018-03-18T09:03:16Z",
+    "closed_at": null,
+    "author_association": "MEMBER",
+    "body": "This solution is pretty complicated to implement on a web platform. Need to add some clarification and say that it intend for mobile applications, and can be also implemented on web - but will be very complicated."
+  }
+
+]
