@@ -12,10 +12,14 @@
     "textlint-rule-period-in-list-item": "^0.2.0",
     "textlint-rule-rousseau": "^1.4.5",
     "textlint-rule-unexpanded-acronym": "^1.2.1",
-    "textlint-rule-write-good": "^1.6.2"
+    "textlint-rule-write-good": "^1.6.2",
+    "snyk": "^1.316.1"
   },
   "scripts": {
     "test": "textlint README.md draft-oauth-jwt-otp-client-assertion.md",
-    "test:fix": "textlint README.md draft-oauth-jwt-otp-client-assertion.md --fix"
-  }
+    "test:fix": "textlint README.md draft-oauth-jwt-otp-client-assertion.md --fix",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
